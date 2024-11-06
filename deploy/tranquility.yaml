@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tranquility
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tranquility
+  template:
+    metadata:
+      labels:
+        app: tranquility
+    spec:
+      containers:
+      - name: tranquility
+        image: docker.io/library/tranquility:2.0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tranquility-service
+spec:
+  selector:
+    app: tranquility
+  ports:
+  - port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: tranquility-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: /tranquility(/|$)(.*)
+        backend:
+          service:
+            name: tranquility-service
+            port:
+              number: 80

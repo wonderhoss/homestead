@@ -1,0 +1,50 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: homestead
+
+nodes:
+- role: control-plane
+- role: worker
+  labels:
+    class: ingress
+    ingress-ready: "true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 8080		# using unprivileged port to be compatible with rootless podman
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 8443		# using unprivileged port to be compatible with rootless podman
+    protocol: TCP
+- role: worker
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      taints:
+        - key: "class"
+          value: "infra"
+          effect: "NoSchedule"
+      kubeletExtraArgs:
+        node-labels: "class=infra"
+- role: worker
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      taints:
+        - key: "class"
+          value: "infra"
+          effect: "NoSchedule"
+      kubeletExtraArgs:
+        node-labels: "class=infra"
+- role: worker
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      taints:
+        - key: "class"
+          value: "infra"
+          effect: "NoSchedule"
+      kubeletExtraArgs:
+        node-labels: "class=infra"
