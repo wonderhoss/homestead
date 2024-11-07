@@ -55,7 +55,18 @@ Next, it will deploy the default manifests, making sure that the ingress control
 Kind also automatically configures a corresponding `kubectl` context, so that `kubectl` commands should "just work(tm)".
 The same goes for other tools that rely on Kubernetes contexts, like `k9s`.
 
-### 4. Teardown
+### 4. Tranquillity
+Once the cluster is ready, the Tranquillity example page should be accessible through the ingress at http://localhost:8080/tranquility/
+In addition, two text-only echo endpoints are deployed at http://localhost:8080/foo and /bar respectively:
+
+```shell
+$ curl localhost:8080/foo
+foo-app%
+$ curl localhost:8080/bar
+bar-app%
+```
+
+### 5. Teardown
 The cluster and all container image archives can be deleted with `make clean`.
 Please note that this currently does not remove the images from the local podman container cache. If desired, this can be done manually with `podman rmi`.
 
