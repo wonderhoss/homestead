@@ -57,7 +57,7 @@ The same goes for other tools that rely on Kubernetes contexts, like `k9s`.
 
 ### 4. Tranquillity
 Once the cluster is ready, the Tranquillity example page should be accessible through the ingress at http://localhost:8080/tranquility/
-In addition, two text-only echo endpoints are deployed at http://localhost:8080/foo and /bar respectively:
+In addition, two text-only echo endpoints are deployed at http://localhost:8080/foo and [/bar](http://localhost:8080/bar) respectively:
 
 ```shell
 $ curl localhost:8080/foo
