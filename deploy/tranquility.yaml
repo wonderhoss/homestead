@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: tranquility
-	image: localhost/tranquility:v1.0-1-gdf906ad
+        image: localhost/tranquility:v1.0-1-gdf906ad
         imagePullPolicy: Never
         ports:
         - containerPort: 80

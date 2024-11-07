@@ -1,16 +1,13 @@
 IMAGE_DIRS := $(shell find . -type d -depth 1 | sed 's/^\.\///')
 
 .PHONY: archives
-archives: $(IMAGE_DIRS).tgz
+archives: $(IMAGE_DIRS).tar
 
 .PHONY: clean
 clean:
-	rm -f *.tgz
+	rm -f *.tar
 
-$(IMAGE_DIRS).tgz: IMG = $(basename $@)
-$(IMAGE_DIRS).tgz:
-	echo "Building archive $(IMG) with tag $$(git -C $(IMG) describe --always --dirty --tags || echo undefined)"
+$(IMAGE_DIRS).tar: IMG = $(basename $@)
+$(IMAGE_DIRS).tar:
 	podman build -t $(IMG):$$(git -C $(IMG) describe --always --dirty --tags || echo undefined) --arch=amd64 $(IMG)
 	podman save -o $(IMG).tar $(IMG):$$(git -C $(IMG) describe --always --dirty --tags || echo undefined)
-	gzip < $(IMG).tar > $@
-	rm $(IMG).tar

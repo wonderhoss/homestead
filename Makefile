@@ -3,14 +3,20 @@ DEPLOY_WAIT := 2
 
 .NOTPARALLEL:
 
+.PHONY: all
+all: kind-cluster load-images deploy
+
 .PHONY: kind-cluster
 kind-cluster:
 	kind create cluster --config $(CLUSTER_NAME)-cluster.yaml
 
-.PHONY: load-images
-load-images:
+.PHONY: build-images
+build-images:
 	$(MAKE) -C images
-	$(foreach archive, $(wildcard images/*.tgz), kind load image-archive $(archive)) -n $(CLUSTER_NAME)
+
+.PHONY: load-images
+load-images: build-images
+	$(foreach archive, $(wildcard images/*.tar), kind load image-archive $(archive) -n $(CLUSTER_NAME))
 
 .PHONY: deploy
 deploy:
@@ -25,8 +31,6 @@ deploy:
 	done
 	kubectl --context kind-$(CLUSTER_NAME) apply -f deploy/
 
-.PHONY: all
-all: kind-cluster load-images deploy
 
 .PHONY: clean
 clean:
