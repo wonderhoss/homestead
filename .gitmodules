@@ -1,0 +1,3 @@
+[submodule "images/tranquility"]
+	path = images/tranquility
+	url = git@github.com:wonderhoss/tranquility.git

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: tranquility
-        image: docker.io/library/tranquility:2.0
+	image: localhost/tranquility:v1.0-1-gdf906ad
         imagePullPolicy: Never
         ports:
         - containerPort: 80
